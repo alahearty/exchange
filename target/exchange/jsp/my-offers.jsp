@@ -11,19 +11,6 @@
         <div class="container">
             <p class="fs-4 mb-5">My Offers</p>
 
-            <!-- <c:if test="${not empty message}">
-                <div class="alert alert-success" style="white-space: pre-line;">
-                    ${message}
-                </div>
-            </c:if>
-
-            <c:if test="${not empty error}">
-                <div class="alert alert-danger" style="white-space: pre-line;">
-                    ${error}
-                </div>
-            </c:if> -->
-
-
             <c:forEach var="interest" items="${interests}">
                 <div class="row">
                     <div class="col-5 border p-1">
@@ -87,7 +74,6 @@
                     </div>
                 </div>
             </c:forEach>
-
         </div>
 
         <script src="js/bootstrap.min.js"></script>
