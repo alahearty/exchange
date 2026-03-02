@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -15,9 +16,17 @@ import javax.servlet.http.HttpSession;
 
 @WebFilter("/*")
 public class AuthFilter implements Filter {
-    private static final String[] authorizedUris = new String[] { "user" };
+    private static final String[] authorizedUris = new String[] { "user", "listing", "my-offers" };
     private static final String[] notAuthorizedUris = new String[] { "login", "register" };
     private static final String defaultUri = "/exchange/";
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
+
+    @Override
+    public void destroy() {
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
