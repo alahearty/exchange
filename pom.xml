@@ -125,7 +125,7 @@
         <version>11.0.21</version>
         <configuration>
           <httpConnector>
-            <port>8090</port>
+            <port>8080</port>
           </httpConnector>
         </configuration>
       </plugin>
