@@ -17,6 +17,32 @@
             <p class="lead">We exchange all kinds of items. Browse, offer, and trade.</p>
         </div>
 
+        <c:if test="${not empty recommendations}">
+            <div class="mb-4">
+                <h5 class="mb-3 fw-bold">Recommended for you</h5>
+                <form action="${pageContext.request.contextPath}/home" method="get" id="recForm">
+                    <input type="hidden" id="recInterest" name="interest">
+                    <div class="row g-3">
+                        <c:forEach var="rec" items="${recommendations}">
+                            <div class="col-md-4 col-lg-3">
+                                <div class="card-alo h-100 listing-card">
+                                    <img src="${rec.imageUrl}" alt="${rec.name}" class="card-img-top" style="height:120px;object-fit:cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%22 y=%2250%22 fill=%22%2394a3b8%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2214%22%3ENo image%3C/text%3E%3C/svg%3E'">
+                                    <div class="card-body p-2">
+                                        <h6 class="mb-1 small fw-bold text-truncate" title="${rec.name}">${rec.name}</h6>
+                                        <p class="mb-1 text-muted small text-truncate" style="font-size:0.75rem">${rec.category.name}</p>
+                                        <button type="button" class="btn btn-alo btn-sm w-100"
+                                            onclick="document.getElementById('recInterest').value='${rec.id}';document.getElementById('recForm').submit();">
+                                            Make Offer
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </form>
+            </div>
+        </c:if>
+
         <div class="row">
             <div class="col-lg-3 mb-4">
                 <div class="card-alo p-3 category-sidebar">

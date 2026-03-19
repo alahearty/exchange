@@ -41,11 +41,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control form-control-alo" placeholder="••••••••" name="password">
+                            <input type="password" class="form-control form-control-alo" placeholder="********" name="password">
                         </div>
                         <div class="mb-4">
                             <label class="form-label">Confirm password</label>
-                            <input type="password" class="form-control form-control-alo" placeholder="••••••••" name="confirmpassword">
+                            <input type="password" class="form-control form-control-alo" placeholder="********" name="confirmpassword">
                         </div>
                         <button type="submit" class="btn btn-alo w-100">Register</button>
                     </form>

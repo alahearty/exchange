@@ -14,7 +14,6 @@ com\example\exchange\dao\BaseDao.class
 com\example\exchange\controller\LoginServlet.class
 com\example\exchange\entity\ListingEntity.class
 com\example\exchange\model\InterestModel.class
-com\example\exchange\controller\HomeServlet.class
 com\example\exchange\controller\RegisterServlet.class
 com\example\exchange\helper\Response.class
 com\example\exchange\model\UserModel.class

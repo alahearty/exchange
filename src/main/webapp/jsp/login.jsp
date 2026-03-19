@@ -30,7 +30,7 @@
                         </div>
                         <div class="mb-4">
                             <label class="form-label">Password</label>
-                            <input type="password" class="form-control form-control-alo" placeholder="••••••••" name="password" value="john.doe" required>
+                            <input type="password" class="form-control form-control-alo" placeholder="********" name="password" value="john.doe" required>
                         </div>
                         <button type="submit" class="btn btn-alo w-100">Sign in</button>
                     </form>

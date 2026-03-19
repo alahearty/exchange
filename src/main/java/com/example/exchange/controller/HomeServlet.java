@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.example.exchange.dao.ListingDao;
 import com.example.exchange.helper.Response;
+import com.example.exchange.service.RecommendationService;
 import com.example.exchange.helper.ResponseT;
 import com.example.exchange.model.HomeListingModel;
 import com.example.exchange.model.ListingModel;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @WebServlet(name = "HomeServlet", urlPatterns = { "/home" })
 public class HomeServlet extends HttpServlet {
     private static ListingDao listingDao = new ListingDao();
+    private static RecommendationService recommendationService = new RecommendationService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -101,6 +103,9 @@ public class HomeServlet extends HttpServlet {
         HomeListingModel model = new HomeListingModel(category, listingDao.getCategories().getData(), listings);
         request.setAttribute("listing", model);
         request.setAttribute("active", category);
+
+        Integer recUserId = authUser != null ? ((UserModel) authUser).getId() : null;
+        request.setAttribute("recommendations", recommendationService.getRecommendations(recUserId));
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/jsp/home.jsp");
         dispatcher.forward(request, response);

@@ -30,11 +30,11 @@
                             <img id="offerorImageUrl" alt="" class="rounded" width="100" height="100" style="object-fit:cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
                         </div>
                         <div class="col-8">
-                            <strong id="offerorName" class="d-block mb-1">—</strong>
-                            <p id="offerorDescription" class="small text-muted mb-1">—</p>
-                            <div class="small"><strong>Qty:</strong> <span id="offerorQuantity">—</span></div>
-                            <div class="small"><strong>Condition:</strong> <span id="offerorCondition">—</span></div>
-                            <div class="small"><strong>Category:</strong> <span id="offerorCategory">—</span></div>
+                            <strong id="offerorName" class="d-block mb-1">-</strong>
+                            <p id="offerorDescription" class="small text-muted mb-1">-</p>
+                            <div class="small"><strong>Qty:</strong> <span id="offerorQuantity">-</span></div>
+                            <div class="small"><strong>Condition:</strong> <span id="offerorCondition">-</span></div>
+                            <div class="small"><strong>Category:</strong> <span id="offerorCategory">-</span></div>
                         </div>
                     </div>
                     <hr>
@@ -61,7 +61,7 @@
             </div>
 
             <div class="col-md-2 d-flex align-items-center justify-content-center offer-divider">
-                <span>→</span>
+                <span>&rarr;</span>
             </div>
 
             <div class="col-md-5">

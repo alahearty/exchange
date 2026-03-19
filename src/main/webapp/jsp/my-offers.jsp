@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="col-md-2 d-flex align-items-center justify-content-center offer-divider">
-                                <span>→</span>
+                                <span>&rarr;</span>
                             </div>
                             <div class="col-md-5">
                                 <div class="offer-card p-3">
