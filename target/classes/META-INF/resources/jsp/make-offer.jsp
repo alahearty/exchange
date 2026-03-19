@@ -1,139 +1,108 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <jsp:include page="head.jsp">
+        <jsp:param name="title" value="Alo Exchange - Make Offer" />
+    </jsp:include>
+</head>
+<body>
+    <jsp:include page="nav.jsp">
+        <jsp:param name="active" value="home" />
+    </jsp:include>
 
-    <head>
-        <title>Alo Exchange - Make Offer</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-    </head>
+    <div class="container">
+        <h2 class="page-title mt-4">Make Offer</h2>
 
-    <body>
-        <jsp:include page="nav.jsp" />
-        <div class="container">
-            <p class="fs-4 mb-5">Make Offer</p>
+        <c:if test="${not empty message}">
+            <div class="alert alert-success alert-alo mb-4" style="white-space: pre-line;">${message}</div>
+        </c:if>
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger alert-alo mb-4" style="white-space: pre-line;">${error}</div>
+        </c:if>
 
-            <c:if test="${not empty message}">
-                <div class="alert alert-success" style="white-space: pre-line;">
-                    ${message}
-                </div>
-            </c:if>
-
-            <c:if test="${not empty error}">
-                <div class="alert alert-danger" style="white-space: pre-line;">
-                    ${error}
-                </div>
-            </c:if>
-
-            <div class="row">
-                <div class="col-6 border p-1">
+        <div class="row g-4 mb-5">
+            <div class="col-md-5">
+                <div class="offer-card h-100">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-3">Your item</h6>
                     <div class="row">
-                        <div class="col-3">
-                            <img id="offerorImageUrl" alt="" class="" width="120px" height="120px" />
+                        <div class="col-4">
+                            <img id="offerorImageUrl" alt="" class="rounded" width="100" height="100" style="object-fit:cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
                         </div>
-                        <div class="col-4 p-0 m-0">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <strong id="offerorName" class="mb-1">name:</strong>
-                            </div>
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <p id="offerorDescription" class="mb-1">${offeree.description}</p>
-                            </div>
-                            <div class="col-10 mb-1 small"><strong>Quantity:</strong>
-                                <span id="offerorQuantity"></span>
-                            </div>
-                            <div class="col-10 mb-1 small"><strong>Condition:</strong>
-                                <span id="offerorCondition"></span>
-                            </div>
-                            <div class="col-10 mb-1 small"><strong>Category:</strong>
-                                <span id="offerorCategory"></span>
-                            </div>
-                        </div>
-                        <div class="col-5">
-                            <form action="/exchange/home" method="post" id="makeOfferForm">
-                                <input type="hidden" id="offerorlistingid" name="offerorlistingid">
-                                <input type="hidden" id="interest" name="interest">
-                                <div class="mb-3">
-                                    <select class="form-control rounded-0" name="listingid" id="listingid">
-                                        <c:forEach var="entry" items="${offeror}">
-                                            <option value='${entry.value}'>${entry.key}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <input type="number" min="1" class="form-control rounded-0"
-                                        placeholder="offer quantity" name="offerorquantity">
-                                </div>
-
-                                <div class="mb-3">
-                                    <input type="number" min="1" class="form-control rounded-0"
-                                        placeholder="requested quantity" name="offereequantity">
-                                </div>
-
-                                <div class="d-flex justify-content-end">
-                                    <input type="submit" class="btn btn-primary rounded-0"
-                                        onclick="document.getElementById('interest').value = '${interest}';document.getElementById('makeOfferForm').submit();"
-                                        value="Make Offer" />
-                                </div>
-                            </form>
+                        <div class="col-8">
+                            <strong id="offerorName" class="d-block mb-1">—</strong>
+                            <p id="offerorDescription" class="small text-muted mb-1">—</p>
+                            <div class="small"><strong>Qty:</strong> <span id="offerorQuantity">—</span></div>
+                            <div class="small"><strong>Condition:</strong> <span id="offerorCondition">—</span></div>
+                            <div class="small"><strong>Category:</strong> <span id="offerorCategory">—</span></div>
                         </div>
                     </div>
-                </div>
-                <div class="col-1 my-auto text-center">
-                    <strong>For -></strong>
-                </div>
-                <div class="col-5 border p-1">
-                    <div class="row">
-                        <div class="col-3">
-                            <img src="${offeree.imageUrl}" alt="" class="" width="120px" height="120px" />
+                    <hr>
+                    <form action="${pageContext.request.contextPath}/home" method="post" id="makeOfferForm" onsubmit="document.getElementById('interest').value='${interest}'">
+                        <input type="hidden" id="offerorlistingid" name="offerorlistingid">
+                        <input type="hidden" id="interest" name="interest">
+                        <div class="mb-3">
+                            <label class="form-label small">Select your item</label>
+                            <select class="form-select form-control-alo" name="listingid" id="listingid">
+                                <c:forEach var="entry" items="${offeror}">
+                                    <option value='${entry.value}'>${entry.key}</option>
+                                </c:forEach>
+                            </select>
                         </div>
-                        <div class="col-9">
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <strong class="mb-1">${offeree.name}</strong>
-                            </div>
-                            <div class="d-flex w-100 align-items-center justify-content-between">
-                                <p class="mb-1">${offeree.description}</p>
-                            </div>
-                            <div class="col-10 mb-1 small"><strong>Quantity:</strong>
-                                ${offeree.quantity}
-                            </div>
-                            <div class="col-10 mb-1 small"><strong>Condition:</strong>
-                                ${offeree.condition}
-                            </div>
-                            <div class="col-10 mb-1 small"><strong>Offers:</strong>
-                                ${offeree.offers}
-                            </div>
-                            <div class="col-10 mb-1 small"><strong>Category:</strong>
-                                ${offeree.category.name}</div>
+                        <div class="mb-3">
+                            <input type="number" min="1" class="form-control form-control-alo" placeholder="Offer quantity" name="offerorquantity" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" min="1" class="form-control form-control-alo" placeholder="Requested quantity" name="offereequantity" required>
+                        </div>
+                        <button type="submit" class="btn btn-alo w-100">Make Offer</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-2 d-flex align-items-center justify-content-center offer-divider">
+                <span>→</span>
+            </div>
+
+            <div class="col-md-5">
+                <div class="offer-card h-100">
+                    <h6 class="text-uppercase text-muted small fw-bold mb-3">Their item</h6>
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="${offeree.imageUrl}" alt="${offeree.name}" class="rounded" width="100" height="100" style="object-fit:cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E'">
+                        </div>
+                        <div class="col-8">
+                            <strong class="d-block mb-1">${offeree.name}</strong>
+                            <p class="small text-muted mb-1">${offeree.description}</p>
+                            <div class="small"><strong>Qty:</strong> ${offeree.quantity}</div>
+                            <div class="small"><strong>Condition:</strong> ${offeree.condition}</div>
+                            <div class="small"><strong>Category:</strong> ${offeree.category.name}</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/jquery.min.js"></script>
-    </body>
-
-    </html>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             listingChanged();
-
-            $("#listingid").on("change", function () {
-                listingChanged();
-            });
+            $("#listingid").on("change", listingChanged);
         });
         function listingChanged() {
-            // const index = $("#listingid").prop("selectedIndex");
-            const val = $("#listingid").val();
-            const data = JSON.parse(val);
-
+            var val = $("#listingid").val();
+            if (!val) return;
+            var data = JSON.parse(val);
             $("#offerorImageUrl").attr("src", data.imageUrl);
-            $("#offerorlistingid").val(data.id)
-            $("#offerorName").text(data.name)
-            $("#offerorDescription").text(data.description)
-            $("#offerorQuantity").text(data.quantity)
-            $("#offerorCondition").text(data.condition)
-            $("#offerorCategory").text(data.category.name)
+            $("#offerorlistingid").val(data.id);
+            $("#offerorName").text(data.name);
+            $("#offerorDescription").text(data.description);
+            $("#offerorQuantity").text(data.quantity);
+            $("#offerorCondition").text(data.condition);
+            $("#offerorCategory").text(data.category.name);
         }
     </script>
+</body>
+</html>

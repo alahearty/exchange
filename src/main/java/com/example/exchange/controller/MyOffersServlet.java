@@ -25,6 +25,7 @@ public class MyOffersServlet extends HttpServlet {
         UserModel user = (UserModel) authUser;
         ResponseT<List<InterestModel>> interests = listingDao.getListingInterestModelByUserId(user.getId());
         req.setAttribute("interests", interests.getData());
+        req.setAttribute("navActive", "offers");
         RequestDispatcher dispatcher = req.getRequestDispatcher("/jsp/my-offers.jsp");
         dispatcher.forward(req, resp);
     }

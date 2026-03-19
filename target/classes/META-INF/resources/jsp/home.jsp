@@ -1,86 +1,80 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <jsp:include page="head.jsp">
+        <jsp:param name="title" value="Alo Exchange - Home" />
+    </jsp:include>
+</head>
+<body>
+    <jsp:include page="nav.jsp">
+        <jsp:param name="active" value="home" />
+    </jsp:include>
 
-    <head>
-        <title>Alo Exchange - Home</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
-    </head>
+    <div class="container">
+        <div class="hero-section">
+            <h1>Welcome to Alo Exchange</h1>
+            <p class="lead">We exchange all kinds of items. Browse, offer, and trade.</p>
+        </div>
 
-    <body>
-        <jsp:include page="nav.jsp" />
-        <div class="container">
-            <h2>Welcome to Alo Exchange</h2>
-            <h5>We exchange all kinds of items.</h5>
-
-            <div class="row mt-5">
-                <div class="col-3">
-                    <form action="/exchange/home" method="get" id="categoryForm">
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="card-alo p-3 category-sidebar">
+                    <h6 class="text-uppercase text-muted mb-3 fw-bold">Categories</h6>
+                    <form action="${pageContext.request.contextPath}/home" method="get" id="categoryForm">
                         <input type="hidden" id="category" name="category">
-                        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
-                            <div class="list-group list-group-flush border-bottom scrollarea">
-                                <a href="#"
-                                    class="list-group-item list-group-item-action ${active == 'all' ? 'active' : ''} py-3 lh-tight"
-                                    aria-current="true"
-                                    onclick="document.getElementById('category').value = 'all';document.getElementById('categoryForm').submit();">
-                                    All
-                                </a>
-                                <c:forEach var="category" items="${listing.categories}">
-                                    <a href="#"
-                                        class="list-group-item list-group-item-action ${category.name.toLowerCase() == active ? 'active' : ''} py-3 lh-tight"
-                                        aria-current="true"
-                                        onclick="document.getElementById('category').value = '${category.name}';document.getElementById('categoryForm').submit();">
-                                        ${category.name}
-                                    </a>
-                                </c:forEach>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-9">
-                    <form action="/exchange/home" method="get" id="listingForm">
-                        <input type="hidden" id="interest" name="interest">
-                        <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
-                            <div class="list-group list-group-flush border-bottom scrollarea">
-                                <c:forEach var="item" items="${listing.listings}">
-                                    <a href="#" class="list-group-item list-group-item-action py-3 lh-tight"
-                                        aria-current="true">
-                                        <div class="row">
-                                            <div class="col-2">
-                                                <img src="${item.imageUrl}" alt="" class="" width="96px"
-                                                    height="96px" />
-                                            </div>
-                                            <div class="col-10">
-                                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                                    <strong class="mb-1">${item.name}</strong>
-                                                    <button ${item.offerStatus} class="btn btn-primary btn-sm"
-                                                        onclick="document.getElementById('interest').value = '${item.id}';document.getElementById('listingForm').submit();">Make
-                                                        Offer</button>
-                                                </div>
-
-                                                <div class="d-flex w-100 align-items-center justify-content-between">
-                                                    <p class="mb-1">${item.description}</p>
-                                                    <small>Offers: ${item.offers}</small>
-                                                </div>
-                                                <div class="col-10 mb-1 small"><strong>quantity:</strong>
-                                                    ${item.quantity}
-                                                </div>
-                                                <div class="col-10 mb-1 small"><strong>condition:</strong>
-                                                    ${item.condition}
-                                                </div>
-                                                <div class="col-10 mb-1 small"><strong>category:</strong>
-                                                    ${item.category.name}</div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </c:forEach>
-                            </div>
-                        </div>
+                        <a href="#" class="category-item ${active == 'all' ? 'active' : ''}"
+                            onclick="document.getElementById('category').value='all';document.getElementById('categoryForm').submit();">All</a>
+                        <c:forEach var="category" items="${listing.categories}">
+                            <a href="#" class="category-item ${category.name.toLowerCase() == active ? 'active' : ''}"
+                                onclick="document.getElementById('category').value='${category.name}';document.getElementById('categoryForm').submit();">${category.name}</a>
+                        </c:forEach>
                     </form>
                 </div>
             </div>
+
+            <div class="col-lg-9">
+                <form action="${pageContext.request.contextPath}/home" method="get" id="listingForm">
+                    <input type="hidden" id="interest" name="interest">
+                    <c:choose>
+                        <c:when test="${empty listing.listings}">
+                            <div class="card-alo p-5 text-center text-muted">
+                                <p class="mb-0">No listings in this category yet.</p>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                    <div class="d-flex flex-column gap-3">
+                        <c:forEach var="item" items="${listing.listings}">
+                            <div class="card-alo listing-card">
+                                <img src="${item.imageUrl}" alt="${item.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%22 y=%2250%22 fill=%22%2394a3b8%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2214%22%3ENo image%3C/text%3E%3C/svg%3E'">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="mb-1 fw-bold">${item.name}</h6>
+                                            <p class="mb-1 text-muted small">${item.description}</p>
+                                            <div class="small text-muted">
+                                                Qty: ${item.quantity} &bull; ${item.condition} &bull; ${item.category.name}
+                                            </div>
+                                        </div>
+                                        <div class="text-end">
+                                            <span class="badge bg-light text-dark mb-2">${item.offers} offers</span>
+                                            <button type="button" class="btn btn-alo btn-sm"
+                                                onclick="document.getElementById('interest').value='${item.id}';document.getElementById('listingForm').submit();">
+                                                Make Offer
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                        </c:otherwise>
+                    </c:choose>
+                </form>
+            </div>
         </div>
+    </div>
 
-        <script src="js/bootstrap.min.js"></script>
-    </body>
-
-    </html>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
