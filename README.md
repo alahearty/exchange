@@ -1,4 +1,4 @@
-# Alo Exchange
+# Alo Exchange — Barter Marketplace
 
 ## Overview
 
@@ -8,6 +8,17 @@ offers (interest records) against another user's listing.
 
 The application is a Java Servlet/JSP web application packaged as a WAR and run locally with the
 Jetty Maven plugin.
+
+## Final-year project summary
+
+The project demonstrates a complete multi-user marketplace workflow without payments: account
+registration and session login, listing CRUD with ownership rules, category browsing, Weka-based
+recommendations, offer creation, owner-only offer acceptance/rejection and persistent offer history.
+Security controls include BCrypt password hashes, CSRF tokens, an authentication filter and
+transactional offer acceptance.
+
+The frontend is server-rendered with JSP, Bootstrap and jQuery; there is no separate frontend
+process. The backend and frontend run together in one Jetty process.
 
 ## Problem statement
 
@@ -120,6 +131,16 @@ The WAR is written to `target/exchange.war`.
 
 ## Run
 
+### One-click Windows launcher
+
+Double-click **`run.cmd`**, or right-click **`run.ps1` → Run with PowerShell**.
+
+The launcher checks Java and Maven, starts Jetty in a separate PowerShell window and opens
+<http://localhost:9999/exchange/>. PostgreSQL and the `exchange` database must already be running
+and loaded from `script.sql`.
+
+### Manual run
+
 ```powershell
 mvn jetty:run
 ```
@@ -127,6 +148,7 @@ mvn jetty:run
 Open: <http://localhost:9999/exchange/>
 
 The Jetty plugin is configured in `pom.xml` with port `9999` and context path `/exchange`.
+Because this is a JSP application, the backend and frontend are served by the same process.
 
 ## Demo account
 
