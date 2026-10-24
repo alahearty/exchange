@@ -39,6 +39,7 @@
                     </div>
                     <hr>
                     <form action="${pageContext.request.contextPath}/home" method="post" id="makeOfferForm" onsubmit="document.getElementById('interest').value='${interest}'">
+                        <input type="hidden" name="csrfToken" value="${csrfToken}">
                         <input type="hidden" id="offerorlistingid" name="offerorlistingid">
                         <input type="hidden" id="interest" name="interest">
                         <div class="mb-3">

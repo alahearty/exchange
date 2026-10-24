@@ -18,6 +18,7 @@
                     <h2 class="page-title mb-4">Log in</h2>
 
                     <form action="${pageContext.request.contextPath}/login" method="post">
+                        <input type="hidden" name="csrfToken" value="${csrfToken}">
                         <input type="hidden" name="origin" value="${origin}">
 
                         <c:if test="${not empty error}">

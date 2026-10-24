@@ -12,6 +12,9 @@
     </jsp:include>
 
     <div class="container">
+        <c:if test="${param.message == 'listing-removed'}">
+            <div class="alert alert-success alert-alo mt-4">The listing was removed from the marketplace.</div>
+        </c:if>
         <div class="hero-section">
             <h1>Welcome to Alo Exchange</h1>
             <p class="lead">We exchange all kinds of items. Browse, offer, and trade.</p>
@@ -28,7 +31,9 @@
                                 <div class="card-alo h-100 listing-card">
                                     <img src="${rec.imageUrl}" alt="${rec.name}" class="card-img-top" style="height:120px;object-fit:cover" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23e2e8f0%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%22 y=%2250%22 fill=%22%2394a3b8%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2214%22%3ENo image%3C/text%3E%3C/svg%3E'">
                                     <div class="card-body p-2">
-                                        <h6 class="mb-1 small fw-bold text-truncate" title="${rec.name}">${rec.name}</h6>
+                                        <h6 class="mb-1 small fw-bold text-truncate" title="${rec.name}">
+                                            <a class="text-decoration-none text-dark" href="${pageContext.request.contextPath}/listing/view?id=${rec.id}">${rec.name}</a>
+                                        </h6>
                                         <p class="mb-1 text-muted small text-truncate" style="font-size:0.75rem">${rec.category.name}</p>
                                         <button type="button" class="btn btn-alo btn-sm w-100"
                                             onclick="document.getElementById('recInterest').value='${rec.id}';document.getElementById('recForm').submit();">
@@ -76,7 +81,9 @@
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between align-items-start">
                                         <div>
-                                            <h6 class="mb-1 fw-bold">${item.name}</h6>
+                                            <h6 class="mb-1 fw-bold">
+                                                <a class="text-decoration-none text-dark" href="${pageContext.request.contextPath}/listing/view?id=${item.id}">${item.name}</a>
+                                            </h6>
                                             <p class="mb-1 text-muted small">${item.description}</p>
                                             <div class="small text-muted">
                                                 Qty: ${item.quantity} &bull; ${item.condition} &bull; ${item.category.name}
@@ -84,10 +91,13 @@
                                         </div>
                                         <div class="text-end">
                                             <span class="badge bg-light text-dark mb-2">${item.offers} offers</span>
-                                            <button type="button" class="btn btn-alo btn-sm"
-                                                onclick="document.getElementById('interest').value='${item.id}';document.getElementById('listingForm').submit();">
-                                                Make Offer
-                                            </button>
+                                            <div class="d-flex gap-2 justify-content-end">
+                                                <a class="btn btn-outline-secondary btn-sm" href="${pageContext.request.contextPath}/listing/view?id=${item.id}">Details</a>
+                                                <button type="button" class="btn btn-alo btn-sm"
+                                                    onclick="document.getElementById('interest').value='${item.id}';document.getElementById('listingForm').submit();">
+                                                    Make Offer
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

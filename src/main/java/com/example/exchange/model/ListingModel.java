@@ -11,6 +11,7 @@ public class ListingModel {
     private CategoryModel category;
     private int offers;
     private String offerStatus;
+    private boolean visible = true;
 
     public ListingModel(int id,
             String name,
@@ -72,5 +73,13 @@ public class ListingModel {
 
     public String getOfferStatus() {
         return offerStatus;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

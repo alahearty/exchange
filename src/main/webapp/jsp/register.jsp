@@ -18,6 +18,7 @@
                     <h2 class="page-title mb-4">Create account</h2>
 
                     <form action="${pageContext.request.contextPath}/register" method="post">
+                        <input type="hidden" name="csrfToken" value="${csrfToken}">
                         <c:if test="${not empty message}">
                             <div class="alert alert-success alert-alo mb-3" style="white-space: pre-line;">${message}</div>
                         </c:if>

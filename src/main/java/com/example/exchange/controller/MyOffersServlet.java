@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.example.exchange.dao.ListingDao;
 import com.example.exchange.helper.ResponseT;
@@ -23,9 +24,27 @@ public class MyOffersServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Object authUser = req.getAttribute("authenticateduser");
         UserModel user = (UserModel) authUser;
-        ResponseT<List<InterestModel>> interests = listingDao.getListingInterestModelByUserId(user.getId());
-        req.setAttribute("interests", interests.getData());
+        ResponseT<List<InterestModel>> made = listingDao.getListingInterestModelByUserId(user.getId());
+        ResponseT<List<InterestModel>> received = listingDao.getReceivedInterestsByUserId(user.getId());
+
+        req.setAttribute("interests", made.getData());
+        req.setAttribute("receivedInterests", received.getData());
         req.setAttribute("navActive", "offers");
+
+        HttpSession session = req.getSession(false);
+        if (session != null) {
+            Object success = session.getAttribute("flashSuccess");
+            Object error = session.getAttribute("flashError");
+            if (success != null) {
+                req.setAttribute("success", success);
+                session.removeAttribute("flashSuccess");
+            }
+            if (error != null) {
+                req.setAttribute("error", error);
+                session.removeAttribute("flashError");
+            }
+        }
+
         RequestDispatcher dispatcher = req.getRequestDispatcher("/jsp/my-offers.jsp");
         dispatcher.forward(req, resp);
     }

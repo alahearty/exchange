@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.example.exchange.dao.UserDao;
+import com.example.exchange.helper.CsrfTokens;
 import com.example.exchange.helper.ResponseT;
 import com.example.exchange.model.UserModel;
 
@@ -35,11 +36,19 @@ public class LoginServlet extends HttpServlet {
         ResponseT<UserModel> result = userDao.login(email, password);
 
         if (result.getSucceeded()) {
+            // Rotate the session id after authentication to reduce session-fixation risk.
+            req.changeSessionId();
             HttpSession session = req.getSession();
             session.setAttribute("user", result.getData());
+            session.setAttribute(CsrfTokens.SESSION_ATTRIBUTE, CsrfTokens.newToken());
             // session.setMaxInactiveInterval(60);
 
-            String url = req.getParameter("origin").isEmpty() ? "/exchange/home" : req.getParameter("origin");
+            String origin = req.getParameter("origin");
+            String url = "/exchange/home";
+            if (origin != null && origin.startsWith("/exchange/") && !origin.startsWith("//")
+                    && !origin.contains("://")) {
+                url = origin;
+            }
 
             resp.sendRedirect(url);
         } else {

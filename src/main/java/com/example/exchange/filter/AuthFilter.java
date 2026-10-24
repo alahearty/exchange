@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.example.exchange.helper.CsrfTokens;
+
 @WebFilter("/*")
 public class AuthFilter implements Filter {
-    private static final String[] authorizedUris = new String[] { "user", "listing", "my-offers" };
+    private static final String[] authorizedUris = new String[] { "user", "listing", "my-offers", "offer" };
     private static final String[] notAuthorizedUris = new String[] { "login", "register" };
     private static final String defaultUri = "/exchange/";
 
@@ -38,9 +40,26 @@ public class AuthFilter implements Filter {
         String reqUri = req.getRequestURI();
         reqUri = Objects.equals(reqUri, defaultUri) ? defaultUri + "home" : reqUri;
 
-        HttpSession session = req.getSession(false);
+        HttpSession session = req.getSession(true);
+        String csrfToken = (String) session.getAttribute(CsrfTokens.SESSION_ATTRIBUTE);
+        if (csrfToken == null) {
+            csrfToken = CsrfTokens.newToken();
+            session.setAttribute(CsrfTokens.SESSION_ATTRIBUTE, csrfToken);
+        }
+        req.setAttribute(CsrfTokens.SESSION_ATTRIBUTE, csrfToken);
 
-        Object userSession = session != null ? session.getAttribute("user") : null;
+        if (isStateChanging(req.getMethod())) {
+            String supplied = req.getHeader(CsrfTokens.HEADER_NAME);
+            if (supplied == null || supplied.isEmpty()) {
+                supplied = req.getParameter(CsrfTokens.FORM_PARAMETER);
+            }
+            if (!CsrfTokens.isValid(csrfToken, supplied)) {
+                res.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid or missing CSRF token");
+                return;
+            }
+        }
+
+        Object userSession = session.getAttribute("user");
 
         if (isAuthorizedUri(reqUri) && userSession == null) {
             res.sendRedirect("login");
@@ -59,6 +78,13 @@ public class AuthFilter implements Filter {
         }
 
         chain.doFilter(request, response);
+    }
+
+    private boolean isStateChanging(String method) {
+        return !("GET".equalsIgnoreCase(method)
+                || "HEAD".equalsIgnoreCase(method)
+                || "OPTIONS".equalsIgnoreCase(method)
+                || "TRACE".equalsIgnoreCase(method));
     }
 
     private boolean isAuthorizedUri(String uri) {

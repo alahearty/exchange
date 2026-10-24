@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.example.exchange.dao.ListingDao;
+import com.example.exchange.entity.ListingEntity;
 import com.example.exchange.helper.Response;
 import com.example.exchange.service.RecommendationService;
 import com.example.exchange.helper.ResponseT;
@@ -114,18 +115,48 @@ public class HomeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException, NumberFormatException {
-        String offereeListingId = req.getParameter("interest");
-        if (offereeListingId == null || offereeListingId.isEmpty()) {
-            req.setAttribute("error", "Invalid listing");
+        req.setCharacterEncoding("UTF-8");
+        Object authUser = req.getAttribute("authenticateduser");
+        if (!(authUser instanceof UserModel)) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
         }
+        UserModel user = (UserModel) authUser;
 
+        String offereeListingId = req.getParameter("interest");
         String offerorListingId = req.getParameter("offerorlistingid");
         String offerorQuantity = req.getParameter("offerorquantity");
         String offereeQuantity = req.getParameter("offereequantity");
 
-        Response result = listingDao.makeOffer(offerorListingId, offerorQuantity, offereeListingId, offereeQuantity);
-        
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/jsp/make-offer.jsp");
-        dispatcher.forward(req, resp);
+        try {
+            int offereeId = Integer.parseInt(offereeListingId);
+            int offerorId = Integer.parseInt(offerorListingId);
+
+            ResponseT<ListingEntity> offeror = listingDao.getListing(offerorId);
+            ResponseT<ListingEntity> offeree = listingDao.getListing(offereeId);
+            if (offeror.getData() == null || offeror.getData().getUserId() != user.getId()) {
+                req.setAttribute("error", "You can only offer one of your own listings.");
+            } else if (!offeror.getData().isVisible()) {
+                req.setAttribute("error", "Your selected listing is no longer available.");
+            } else if (offeree.getData() == null || !offeree.getData().isVisible()) {
+                req.setAttribute("error", "The requested listing no longer exists.");
+            } else if (offeree.getData().getUserId() == user.getId()) {
+                req.setAttribute("error", "You cannot make an offer on your own listing.");
+            } else {
+                Response result = listingDao.makeOffer(offerorListingId, offerorQuantity, offereeListingId,
+                        offereeQuantity);
+                if (result.getSucceeded()) {
+                    req.getSession().setAttribute("flashSuccess", "Offer submitted successfully.");
+                    resp.sendRedirect(req.getContextPath() + "/my-offers");
+                    return;
+                }
+                req.setAttribute("error", result.getErrorMessage());
+            }
+        } catch (Exception ex) {
+            req.setAttribute("error", "Please select a listing and valid quantities.");
+        }
+
+        req.setAttribute("interest", offereeListingId);
+        makeOffer(req, resp, offereeListingId == null ? "" : offereeListingId);
     }
 }

@@ -36,9 +36,9 @@ CREATE TABLE interest
 	offereelistingid INT NOT NULL REFERENCES listing(id)
 );
 
-INSERT INTO "user" (email, firstname, lastname, password) VALUES('john@doe.com', 'John', 'Doe', 'john.doe');
-INSERT INTO "user" (email, firstname, lastname, password) VALUES('bill@gates.com', 'Bill', 'Gates', 'bill.gates');
-INSERT INTO "user" (email, firstname, lastname, password) VALUES('steve@jobs.com', 'Steve', 'Jobs', 'steve.jobs');
+INSERT INTO "user" (email, firstname, lastname, password) VALUES('john@doe.com', 'John', 'Doe', '$2a$12$2f8GmIYik0ILlfXJcBTbnuth.ZbKk0cIs/dUYwA8niCpX5X.igFNy');
+INSERT INTO "user" (email, firstname, lastname, password) VALUES('bill@gates.com', 'Bill', 'Gates', '$2a$12$F14u7IklMqDGMwyqfYIprOP4X1639ZtFhpkt45tqWWB6A9w5WB8CS');
+INSERT INTO "user" (email, firstname, lastname, password) VALUES('steve@jobs.com', 'Steve', 'Jobs', '$2a$12$bGeVQSIGWeVmhTQZU/hF6uWyLevnOVmBm0NH3I7dSf0oFAUZ0gzpi');
 
 INSERT INTO category (name) VALUES('Electronics');
 INSERT INTO category (name) VALUES('Clothing');

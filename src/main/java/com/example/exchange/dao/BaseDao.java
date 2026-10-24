@@ -14,10 +14,15 @@ import com.example.exchange.helper.Response;
 import com.example.exchange.helper.ResponseT;
 
 public abstract class BaseDao {
-    private static final String URL = "jdbc:postgresql://localhost:5432/exchange";
-    private static final String USER = "worinium";
-    private static final String PASSWORD = "worisoft@123";
+    private static final String URL = env("EXCHANGE_DB_URL", "jdbc:postgresql://localhost:5432/exchange");
+    private static final String USER = env("EXCHANGE_DB_USER", "worinium");
+    private static final String PASSWORD = env("EXCHANGE_DB_PASSWORD", "worisoft@123");
     private static final String DRIVER = "org.postgresql.Driver";
+
+    private static String env(String name, String fallback) {
+        String value = System.getenv(name);
+        return value == null || value.isBlank() ? fallback : value;
+    }
 
     protected Connection getConnection() throws SQLException, ClassNotFoundException {
         Connection connection = null;

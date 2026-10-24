@@ -15,7 +15,10 @@
                         <a class="nav-link ${param.active == 'offers' ? 'active' : ''}" href="${pageContext.request.contextPath}/my-offers">Offers</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link ${param.active == 'interests' ? 'active' : ''}" href="${pageContext.request.contextPath}/listing/interest">Interests</a>
+                        <a class="nav-link ${param.active == 'sell' ? 'active' : ''}" href="${pageContext.request.contextPath}/listing/create">Sell an item</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ${param.active == 'mine' ? 'active' : ''}" href="${pageContext.request.contextPath}/listing/mine">My listings</a>
                     </li>
                 </c:if>
             </ul>
@@ -32,6 +35,7 @@
                     <c:otherwise>
                         <li class="nav-item">
                             <form action="${pageContext.request.contextPath}/logout" method="post" class="d-inline">
+                                <input type="hidden" name="csrfToken" value="${csrfToken}">
                                 <button type="submit" class="btn-logout">Logout ${authenticateduser.email}</button>
                             </form>
                         </li>
